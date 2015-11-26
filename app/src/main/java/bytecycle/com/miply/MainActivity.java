@@ -20,7 +20,8 @@ import android.widget.ImageView;
 import com.mobeta.android.dslv.DragSortController;
 import com.mobeta.android.dslv.DragSortListView;
 import com.wowwee.bluetoothrobotcontrollib.sdk.MipRobot;
-import com.wowwee.bluetoothrobotcontrollib.sdk.MipRobotFinder;
+import com.wowwee.bluetoothrobotcontrollib.sdk.MipRobotFinderFixed;
+import com.wowwee.bluetoothrobotcontrollib.sdk.MipRobotFixed;
 
 import java.util.List;
 
@@ -83,11 +84,11 @@ public class MainActivity extends AppCompatActivity {
         final BluetoothManager bluetoothManager = (BluetoothManager) this.getSystemService(Context.BLUETOOTH_SERVICE);
         mBluetoothAdapter = bluetoothManager.getAdapter();
 
-        // Set BluetoothAdapter to MipRobotFinder
-        MipRobotFinder.getInstance().setBluetoothAdapter(mBluetoothAdapter);
+        // Set BluetoothAdapter to MipRobotFinderFixed
+        MipRobotFinderFixed.getInstance().setBluetoothAdapter(mBluetoothAdapter);
 
-        // Set Context to MipRobotFinder
-        MipRobotFinder finder = MipRobotFinder.getInstance();
+        // Set Context to MipRobotFinderFixed
+        MipRobotFinderFixed finder = MipRobotFinderFixed.getInstance();
         finder.setApplicationContext(getApplicationContext());
     }
 
@@ -153,9 +154,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void scanLeDevice(final boolean enable) {
         if (enable) {
-            MipRobotFinder.getInstance().scanForMips();
+            MipRobotFinderFixed.getInstance().scanForMips();
         } else {
-            MipRobotFinder.getInstance().stopScanForMips();
+            MipRobotFinderFixed.getInstance().stopScanForMips();
         }
     }
 
@@ -163,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        this.registerReceiver(mMipFinderBroadcastReceiver, MipRobotFinder.getMipRobotFinderIntentFilter());
+        this.registerReceiver(mMipFinderBroadcastReceiver, MipRobotFinderFixed.getMipRobotFinderIntentFilter());
         if (mBluetoothAdapter != null && !mBluetoothAdapter.isEnabled()) {
             if (!mBluetoothAdapter.isEnabled()) {
                 Log.e("Miply","No bluetooth!");
@@ -173,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Search for mip
-        MipRobotFinder.getInstance().clearFoundMipList();
+        MipRobotFinderFixed.getInstance().clearFoundMipList();
 
         // When doing a search, turn off any existing searches and try again
         scanLeDevice(false);
@@ -186,14 +187,14 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
-            if (MipRobotFinder.MipRobotFinder_MipFound.equals(action)) {
+            if (MipRobotFinderFixed.MipRobotFinder_MipFound.equals(action)) {
                 // Connect to mip
                 final Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
 
                     @Override
                     public void run() {
-                        List<MipRobot> mipFoundList = MipRobotFinder.getInstance().getMipsFoundList();
+                        List<MipRobotFixed> mipFoundList = MipRobotFinderFixed.getInstance().getMipsFoundList();
                         if (mipFoundList != null && mipFoundList.size() > 0){
                             MipRobot selectedMipRobot = mipFoundList.get(0);
                             if (selectedMipRobot != null){

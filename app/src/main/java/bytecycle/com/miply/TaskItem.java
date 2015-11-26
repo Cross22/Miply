@@ -9,6 +9,7 @@ import com.wowwee.bluetoothrobotcontrollib.MipCommandValues;
 import com.wowwee.bluetoothrobotcontrollib.MipRobotSound;
 import com.wowwee.bluetoothrobotcontrollib.RobotCommand;
 import com.wowwee.bluetoothrobotcontrollib.sdk.MipRobot;
+import com.wowwee.bluetoothrobotcontrollib.sdk.MipRobotFixed;
 
 import java.util.concurrent.TimeUnit;
 
@@ -89,9 +90,8 @@ public class TaskItem {
                 TimeUnit.SECONDS.sleep(2);
                 break;
             case SPEAKER:
-                robot.sendRobotCommand(
-                        RobotCommand.create(MipCommandValues.kMipSetRadarModeOrRadarResponse, (byte)4)
-                        );
+                MipRobotFixed fixedBot= (MipRobotFixed) robot;
+                fixedBot.mipSetRadarMode(MipRobotFixed.RadarMode.RANGE);
 //                robot.mipPlaySound(new MipRobotSound((byte)99, (byte)0, (byte)100));
 //                TimeUnit.SECONDS.sleep(1);
                 break;

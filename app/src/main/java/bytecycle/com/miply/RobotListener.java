@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.util.Log;
 
 import com.wowwee.bluetoothrobotcontrollib.sdk.MipRobot;
+import com.wowwee.bluetoothrobotcontrollib.sdk.MipRobot;
 
 import java.util.ArrayList;
 import java.util.Date;

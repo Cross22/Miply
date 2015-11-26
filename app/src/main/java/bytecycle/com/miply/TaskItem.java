@@ -63,9 +63,10 @@ public class TaskItem {
             case FORWARD:
                 // -127..127 for cm values
                 // Move Speed is 0..30
-                robot.mipDriveDistanceByCm(255);
+//                robot.mipDriveDistanceByCm(255);
+
                 // Max: 1.7 seconds forward drive
-//                robot.mipDriveForwardForMilliseconds(200*7,30);
+//              robot.mipDriveForwardForMilliseconds(1700,30);
                 TimeUnit.SECONDS.sleep(5);
                 break;
             case BACK:
@@ -82,10 +83,10 @@ public class TaskItem {
                 TimeUnit.SECONDS.sleep(2);
                 break;
             case COLOR:
-                final byte maxb= 127;
+                final byte maxb= (byte)255;
                 final byte minb= 0;
-                robot.setMipChestRGBLedWithColor(maxb, minb, minb, minb);
-                TimeUnit.SECONDS.sleep(1);
+                robot.setMipChestRGBLedWithColor(maxb, minb, minb, (byte)0);
+                TimeUnit.SECONDS.sleep(2);
                 break;
             case SPEAKER:
                 robot.mipPlaySound(new MipRobotSound((byte)99, (byte)0, (byte)100));

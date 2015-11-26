@@ -30,20 +30,8 @@ public class MainActivity extends AppCompatActivity {
     DragSortListView mListView;
     private BluetoothAdapter mBluetoothAdapter;
 
-    protected void makeDraggable(int viewId, final TaskItem.TaskType taskType) {
+    protected void makeClickable(int viewId, final TaskItem.TaskType taskType) {
         final ImageView iv = (ImageView) findViewById(viewId);
-        // Long click listener to enable dragging. However, long press takes too long
-        // so we also enable single click below
-        iv.setOnLongClickListener(
-                new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View view) {
-                        ShadowBuilder shadow = new ShadowBuilder(iv);
-                        view.startDrag(null, shadow, new TaskItem(taskType), 0);
-                        return false;
-                    }
-                }
-        );
         iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -113,20 +101,17 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(myToolbar);
 
         // Action templates in bottom shelf should be draggable
-        makeDraggable(R.id.imgUp, TaskItem.TaskType.FORWARD);
-        makeDraggable(R.id.imgDown, TaskItem.TaskType.BACK);
-        makeDraggable(R.id.imgLeft, TaskItem.TaskType.LEFT);
-        makeDraggable(R.id.imgRight, TaskItem.TaskType.RIGHT);
-        makeDraggable(R.id.imgFill, TaskItem.TaskType.COLOR);
-        makeDraggable(R.id.imgPause, TaskItem.TaskType.DELAY);
-        makeDraggable(R.id.imgSpeech, TaskItem.TaskType.SPEAKER);
+        makeClickable(R.id.imgUp, TaskItem.TaskType.FORWARD);
+        makeClickable(R.id.imgDown, TaskItem.TaskType.BACK);
+        makeClickable(R.id.imgLeft, TaskItem.TaskType.LEFT);
+        makeClickable(R.id.imgRight, TaskItem.TaskType.RIGHT);
+        makeClickable(R.id.imgFill, TaskItem.TaskType.COLOR);
+        makeClickable(R.id.imgPause, TaskItem.TaskType.DELAY);
+        makeClickable(R.id.imgSpeech, TaskItem.TaskType.SPEAKER);
 
         // Action templates can be dragged onto the list view
         mListView = (DragSortListView) findViewById(R.id.listView);
-        mListView.setOnDragListener(new DragTarget());
-
         configureDragListView();
-
         configureBleService();
     }
 
@@ -136,47 +121,6 @@ public class MainActivity extends AppCompatActivity {
             row = mListView.getCount(); // append
         mAdapter.insert(item, (int)row);
     }
-
-    protected class DragTarget implements View.OnDragListener {
-
-        @Override
-        public boolean onDrag(View v, DragEvent event) {
-            final int action = event.getAction();
-            switch (action) {
-                case DragEvent.ACTION_DRAG_STARTED:
-                    // returns true to indicate that the View can accept the dragged data.
-                    return true;
-
-                case DragEvent.ACTION_DRAG_ENTERED:
-                    return true;
-
-                case DragEvent.ACTION_DRAG_LOCATION:
-                    // Ignore the event
-                    return true;
-
-                case DragEvent.ACTION_DRAG_EXITED:
-                    return true;
-
-                case DragEvent.ACTION_DROP:
-                    insertItemIntoList((TaskItem) event.getLocalState(), (int) event.getX(), (int) event.getY());
-
-                    // Returns true. DragEvent.getResult() will return true.
-                    return true;
-
-                case DragEvent.ACTION_DRAG_ENDED:
-                    // returns true; the value is ignored.
-                    return true;
-
-                // An unknown action type was received.
-                default:
-                    Log.e("DragDrop Example", "Unknown action type received by OnDragListener.");
-                    break;
-            }
-
-            return false;
-        }
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater= getMenuInflater();

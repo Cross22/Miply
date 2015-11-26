@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="bytecycle.com.miply.MainActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#be8c04"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
+    <View
+        android:id="@+id/toolbar_shadow"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:layout_below="@id/my_toolbar"
+        android:background="@drawable/toolbar_dropshadow" />
+
+    <HorizontalScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="85dp"
+        android:id="@+id/scrollView"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:background="@drawable/border">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal">
+
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:id="@+id/imgUp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentStart="true"
+                android:src="@drawable/up_icon" />
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:id="@+id/imgDown"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/imgUp"
+                android:src="@drawable/down_icon" />
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:id="@+id/imgLeft"
+                android:src="@drawable/left_icon"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/imgDown" />
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:id="@+id/imgRight"
+                android:src="@drawable/right_icon"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/imgLeft" />
+
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:id="@+id/imgFill"
+                android:src="@drawable/fill_icon"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/imgRight" />
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:id="@+id/imgSpeech"
+                android:src="@drawable/speech_icon"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/imgFill" />
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:id="@+id/imgPause"
+                android:src="@drawable/pause_icon"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/imgSpeech" />
+
+
+        </RelativeLayout>
+    </HorizontalScrollView>
+
+    <com.mobeta.android.dslv.DragSortListView
+        xmlns:dslv="http://schemas.android.com/apk/res-auto"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/listView"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/scrollView"
+        android:padding="16dp"
+        android:divider="@null"
+        android:dividerHeight="0dp"
+        dslv:collapsed_height="2dp"
+        dslv:drag_scroll_start="0.33"
+        dslv:max_drag_scroll_speed="0.5"
+        dslv:float_alpha="0.6"
+        dslv:slide_shuffle_speed="0.3"
+        dslv:use_default_controller="true"
+        android:layout_below="@+id/my_toolbar" />
+
+</RelativeLayout>

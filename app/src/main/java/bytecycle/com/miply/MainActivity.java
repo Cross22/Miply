@@ -3,11 +3,8 @@ package bytecycle.com.miply;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
 import android.content.BroadcastReceiver;
-import android.content.ClipDescription;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.net.Uri;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,14 +15,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.Toast;
 
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.mobeta.android.dslv.DragSortController;
 import com.mobeta.android.dslv.DragSortListView;
 import com.wowwee.bluetoothrobotcontrollib.sdk.MipRobot;
@@ -35,11 +26,11 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ImageAdapter mAdapter;
+    private TaskAdapter mAdapter;
     DragSortListView mListView;
     private BluetoothAdapter mBluetoothAdapter;
 
-    protected void makeDraggable(int viewId) {
+    protected void makeDraggable(int viewId, final TaskItem.TaskType taskType) {
         final ImageView iv = (ImageView) findViewById(viewId);
         // Long click listener to enable dragging. However, long press takes too long
         // so we also enable single click below
@@ -48,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public boolean onLongClick(View view) {
                         ShadowBuilder shadow = new ShadowBuilder(iv);
-                        view.startDrag(null, shadow, iv, 0);
+                        view.startDrag(null, shadow, new TaskItem(taskType), 0);
                         return false;
                     }
                 }
@@ -56,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                insertViewIntoList(view, -1,-1); // single click to add to bottom of list
+                insertItemIntoList(new TaskItem(taskType), -1, -1); // single click to add to bottom of list
             }
         });
     }
@@ -64,14 +55,14 @@ public class MainActivity extends AppCompatActivity {
     // DragSortListView requires some extensive configuration to work right..
     protected void configureDragListView() {
         // Set Listview backing store (it's an array of views)
-        mAdapter = new ImageAdapter(this);
+        mAdapter = new TaskAdapter(this);
         mListView.setAdapter(mAdapter);
 
         mListView.setDropListener(new DragSortListView.DropListener() {
             @Override
             public void drop(int from, int to) {
                 if (from != to) {
-                    View item = mAdapter.getItem(from);
+                    TaskItem item = mAdapter.getItem(from);
                     mAdapter.remove(item);
                     mAdapter.insert(item, to);
                 }
@@ -122,14 +113,13 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(myToolbar);
 
         // Action templates in bottom shelf should be draggable
-        makeDraggable(R.id.imgUp);
-        makeDraggable(R.id.imgDown);
-        makeDraggable(R.id.imgLeft);
-        makeDraggable(R.id.imgRight);
-        makeDraggable(R.id.imgFill);
-        makeDraggable(R.id.imgPause);
-        makeDraggable(R.id.imgSpeech);
-
+        makeDraggable(R.id.imgUp, TaskItem.TaskType.FORWARD);
+        makeDraggable(R.id.imgDown, TaskItem.TaskType.BACK);
+        makeDraggable(R.id.imgLeft, TaskItem.TaskType.LEFT);
+        makeDraggable(R.id.imgRight, TaskItem.TaskType.RIGHT);
+        makeDraggable(R.id.imgFill, TaskItem.TaskType.COLOR);
+        makeDraggable(R.id.imgPause, TaskItem.TaskType.DELAY);
+        makeDraggable(R.id.imgSpeech, TaskItem.TaskType.SPEAKER);
 
         // Action templates can be dragged onto the list view
         mListView = (DragSortListView) findViewById(R.id.listView);
@@ -140,11 +130,11 @@ public class MainActivity extends AppCompatActivity {
         configureBleService();
     }
 
-    void insertViewIntoList(View v, int x, int y) {
+    void insertItemIntoList(TaskItem item, int x, int y) {
         int row= mListView.pointToPosition(x,y);
         if (row < 0)
             row = mListView.getCount(); // append
-        mAdapter.insert(v, (int)row);
+        mAdapter.insert(item, (int)row);
     }
 
     protected class DragTarget implements View.OnDragListener {
@@ -168,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
                     return true;
 
                 case DragEvent.ACTION_DROP:
-                    insertViewIntoList((View) event.getLocalState(), (int) event.getX(), (int) event.getY());
+                    insertItemIntoList((TaskItem) event.getLocalState(), (int) event.getX(), (int) event.getY());
 
                     // Returns true. DragEvent.getResult() will return true.
                     return true;
@@ -194,6 +184,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    // currently active task list
     protected RobotTasks mTasks;
 
     @Override
@@ -206,6 +197,7 @@ public class MainActivity extends AppCompatActivity {
                     mTasks= null;
                 }
                 mTasks= new RobotTasks(mListView, mRobotListener);
+                mTasks.execute();
                 return true;
             case R.id.action_settings:
                 //TODO:

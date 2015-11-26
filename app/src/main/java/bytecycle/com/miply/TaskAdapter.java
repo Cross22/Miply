@@ -14,8 +14,8 @@ import java.util.List;
 /**
  * Created by marco on 11/22/15.
  */
-public class ImageAdapter extends ArrayAdapter<View> {
-    public ImageAdapter(Context context) {
+public class TaskAdapter extends ArrayAdapter<TaskItem> {
+    public TaskAdapter(Context context) {
         super(context, -1);
     }
 
@@ -28,14 +28,12 @@ public class ImageAdapter extends ArrayAdapter<View> {
         ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
 
         // show image with same drawable as the one we dragged up here
-        ImageView sourceView= (ImageView) getItem(position);
-        imageView.setImageDrawable(sourceView.getDrawable());
-
+        imageView.setImageDrawable(getItem(position).getDrawable(getContext()));
         return rowView;
     }
 
     // stable IDs
-    private HashMap<View, Integer> mIdMap = new HashMap<View, Integer>();
+    private HashMap<TaskItem, Integer> mIdMap = new HashMap<TaskItem, Integer>();
     private Integer mCount=0;
 
     @Override
@@ -45,27 +43,27 @@ public class ImageAdapter extends ArrayAdapter<View> {
 
     @Override
     public long getItemId(int position) {
-        View v= getItem(position);
-        Integer stableId= mIdMap.get(v);
+        TaskItem t= getItem(position);
+        Integer stableId= mIdMap.get(t);
         if (stableId==null)
             return -1;
         return stableId;
     }
 
     @Override
-    public void add(View object) {
+    public void add(TaskItem object) {
         mIdMap.put(object, mCount++);
         super.add(object);
     }
 
     @Override
-    public void remove(View object) {
+    public void remove(TaskItem object) {
         mIdMap.remove(object);
         super.remove(object);
     }
 
     @Override
-    public void insert(View object, int index) {
+    public void insert(TaskItem object, int index) {
         mIdMap.put(object, mCount++);
         super.insert(object, index);
     }

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by marco on 11/25/15.
+ * Created by Marco Grubert on 11/25/15.
  */
 public class MipRobotFixed extends MipRobot {
 

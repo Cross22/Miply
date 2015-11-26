@@ -5,7 +5,9 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 
+import com.wowwee.bluetoothrobotcontrollib.MipCommandValues;
 import com.wowwee.bluetoothrobotcontrollib.MipRobotSound;
+import com.wowwee.bluetoothrobotcontrollib.RobotCommand;
 import com.wowwee.bluetoothrobotcontrollib.sdk.MipRobot;
 
 import java.util.concurrent.TimeUnit;
@@ -61,11 +63,9 @@ public class TaskItem {
         try {
         switch (taskType) {
             case FORWARD:
-                // -127..127 for cm values
-                // Move Speed is 0..30
-//                robot.mipDriveDistanceByCm(255);
-
+                robot.mipDriveDistanceByCm(value);
                 // Max: 1.7 seconds forward drive
+                // Move Speed is 0..30
 //              robot.mipDriveForwardForMilliseconds(1700,30);
                 TimeUnit.SECONDS.sleep(5);
                 break;
@@ -89,8 +89,11 @@ public class TaskItem {
                 TimeUnit.SECONDS.sleep(2);
                 break;
             case SPEAKER:
-                robot.mipPlaySound(new MipRobotSound((byte)99, (byte)0, (byte)100));
-                TimeUnit.SECONDS.sleep(1);
+                robot.sendRobotCommand(
+                        RobotCommand.create(MipCommandValues.kMipSetRadarModeOrRadarResponse, (byte)4)
+                        );
+//                robot.mipPlaySound(new MipRobotSound((byte)99, (byte)0, (byte)100));
+//                TimeUnit.SECONDS.sleep(1);
                 break;
             case DELAY:
                 TimeUnit.SECONDS.sleep(this.value);

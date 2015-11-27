@@ -196,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
                         List<MipRobotFixed> mipFoundList = MipRobotFinderFixed.getInstance().getMipsFoundList();
                         if (mipFoundList != null && mipFoundList.size() > 0){
-                            MipRobot selectedMipRobot = mipFoundList.get(0);
+                            MipRobotFixed selectedMipRobot = mipFoundList.get(0);
                             if (selectedMipRobot != null){
                                 connectToMip(selectedMipRobot);
                             }
@@ -208,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    private void connectToMip(final MipRobot mip) {
+    private void connectToMip(final MipRobotFixed mip) {
         this.runOnUiThread(new Runnable() {
             @Override
             public void run() {

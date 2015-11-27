@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.wowwee.bluetoothrobotcontrollib.sdk.MipRobot;
 import com.wowwee.bluetoothrobotcontrollib.sdk.MipRobot;
+import com.wowwee.bluetoothrobotcontrollib.sdk.MipRobotFixed;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,7 +14,7 @@ import java.util.Date;
 /**
  * Created by marco on 11/25/15.
  */
-public class RobotListener implements MipRobot.MipRobotInterface {
+public class RobotListener implements MipRobotFixed.MipRobotInterfaceFixed {
     final String TAG= "RobotListener";
     protected MainActivity mParent;
 
@@ -92,5 +93,10 @@ public class RobotListener implements MipRobot.MipRobotInterface {
     @Override
     public void mipRobotIsCurrentlyInBootloader(MipRobot mipRobot, boolean b) {
         Log.d(TAG, "inBootloader : "+b);
+    }
+
+    @Override
+    public void mipRobotDidReceiveRangeReading(MipRobotFixed.ObstacleDistance distance) {
+        Log.d(TAG, "Distance reading : "+distance.toString() );
     }
 }

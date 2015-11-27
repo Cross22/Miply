@@ -45,14 +45,24 @@ public class MipRobotFixed extends MipRobot {
         public byte value;
     }
 
-    // Ideally this should be sent via the callback listener or broadcast receiver.
-    // I am just putting it here for demo purposes.
-    public ObstacleDistance detectedObject= ObstacleDistance.NONE;
-
     public enum ObstacleDistance {
         NONE, CLOSE, FAR;
     }
 
+    protected MipRobotInterfaceFixed callbackInterfaceFixed;
+
+    // Use this callback instead of MipRobotInterface to get range callbacks
+    public void setCallbackInterface(MipRobotFixed.MipRobotInterfaceFixed callbackInterface) {
+        this.callbackInterfaceFixed = callbackInterface;
+        super.setCallbackInterface(callbackInterface);
+    }
+
+    // Most recently received range reading
+    public ObstacleDistance detectedObject= ObstacleDistance.NONE;
+
+    public interface MipRobotInterfaceFixed extends MipRobotInterface {
+        void mipRobotDidReceiveRangeReading(ObstacleDistance distance);
+    }
 
     protected void handleReceivedMipCommand(RobotCommand robotCommand) {
         if (robotCommand != null) {
@@ -71,6 +81,9 @@ public class MipRobotFixed extends MipRobot {
                         default:
                             this.detectedObject = ObstacleDistance.NONE;
                             break;
+                    }
+                    if (callbackInterfaceFixed!=null) {
+                        this.callbackInterfaceFixed.mipRobotDidReceiveRangeReading(this.detectedObject);
                     }
                     return;
                 }

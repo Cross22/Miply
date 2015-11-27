@@ -2,10 +2,10 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="#331a00" />
+            <solid android:color="#fff7d9" />
         </shape>
     </item>
-    <item android:left="5dp" android:right="5dp"  android:top="5dp" >
+    <item android:top="5dp" >
         <bitmap android:src="@drawable/wood"
             />
     </item>

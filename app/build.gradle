@@ -26,4 +26,5 @@ dependencies {
     compile 'com.google.android.gms:play-services-appindexing:8.1.0'
     compile 'asia.ivity.android:drag-sort-listview:1.0'
     compile files('libs/WowWee-Bluetooth-Robot-Library-2.jar')
+    compile 'com.github.QuadFlask:colorpicker:0.0.9'
 }

@@ -36,6 +36,18 @@
         android:textSize="16sp"
         android:layout_centerVertical="true"
         android:textAlignment="center"
-        android:background="#fff7d9" />
+        android:background="#fff7d9"
+        android:visibility="gone" />
+
+    <ImageButton
+        android:id="@+id/colorButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@id/icon"
+        android:layout_centerVertical="true"
+        android:textAlignment="center"
+        android:background="#fff7d9"
+        android:src="@drawable/colorpicker" />
 
 </RelativeLayout> 

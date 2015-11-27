@@ -7,11 +7,13 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Handler;
 import android.util.Log;
+
 import com.wowwee.bluetoothrobotcontrollib.BluetoothLeService;
 import com.wowwee.bluetoothrobotcontrollib.BluetoothRobot;
 import com.wowwee.bluetoothrobotcontrollib.BluetoothRobotFinder;
 import com.wowwee.bluetoothrobotcontrollib.sdk.MipRobotFixed;
 import com.wowwee.bluetoothrobotcontrollib.util.AdRecord;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -42,7 +44,7 @@ public class MipRobotFinderFixed extends BluetoothRobotFinder {
     }
 
     public static MipRobotFinderFixed getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new MipRobotFinderFixed();
         }
 
@@ -59,14 +61,14 @@ public class MipRobotFinderFixed extends BluetoothRobotFinder {
     }
 
     protected void mipRobotDidConnect(MipRobotFixed mip) {
-        if(mip != null && !this.mMipsConnected.contains(mip)) {
+        if (mip != null && !this.mMipsConnected.contains(mip)) {
             this.mMipsConnected.add(mip);
         }
 
     }
 
     protected void mipRobotDidDisconnect(MipRobotFixed mip) {
-        if(mip != null) {
+        if (mip != null) {
             this.mMipsConnected.remove(mip);
             this.mMipsFound.remove(mip);
         }
@@ -84,18 +86,18 @@ public class MipRobotFinderFixed extends BluetoothRobotFinder {
             public void run() {
                 MipRobotFinderFixed.this.stopScanForMips();
             }
-        }, (long)(pSeconds * 1000));
+        }, (long) (pSeconds * 1000));
     }
 
     public void stopScanForMips() {
-        if(this.mBluetoothAdapter != null) {
+        if (this.mBluetoothAdapter != null) {
             this.mBluetoothAdapter.stopLeScan(this.mLeScanCallback);
         }
 
     }
 
     public MipRobotFixed firstConnectedMip() {
-        return this.mMipsConnected.size() > 0?(MipRobotFixed)this.mMipsConnected.get(0):null;
+        return this.mMipsConnected.size() > 0 ? (MipRobotFixed) this.mMipsConnected.get(0) : null;
     }
 
     public void clearFoundMipList() {
@@ -103,17 +105,17 @@ public class MipRobotFinderFixed extends BluetoothRobotFinder {
         Iterator var3 = this.mMipsFound.iterator();
 
         MipRobotFixed intent;
-        while(var3.hasNext()) {
-            intent = (MipRobotFixed)var3.next();
-            if(!this.mMipsConnected.contains(intent)) {
+        while (var3.hasNext()) {
+            intent = (MipRobotFixed) var3.next();
+            if (!this.mMipsConnected.contains(intent)) {
                 mipsToRemove.add(intent);
             }
         }
 
         var3 = mipsToRemove.iterator();
 
-        while(var3.hasNext()) {
-            intent = (MipRobotFixed)var3.next();
+        while (var3.hasNext()) {
+            intent = (MipRobotFixed) var3.next();
             this.mMipsFound.remove(intent);
         }
 
@@ -124,9 +126,9 @@ public class MipRobotFinderFixed extends BluetoothRobotFinder {
     public MipRobotFixed findMip(BluetoothDevice pDevice) {
         Iterator var3 = this.mMipsFound.iterator();
 
-        while(var3.hasNext()) {
-            MipRobotFixed mip = (MipRobotFixed)var3.next();
-            if(mip.getBluetoothDevice().equals(pDevice)) {
+        while (var3.hasNext()) {
+            MipRobotFixed mip = (MipRobotFixed) var3.next();
+            if (mip.getBluetoothDevice().equals(pDevice)) {
                 return mip;
             }
         }
@@ -143,9 +145,9 @@ public class MipRobotFinderFixed extends BluetoothRobotFinder {
     }
 
     private void startScan() {
-        if(this.mBluetoothAdapter != null) {
+        if (this.mBluetoothAdapter != null) {
             boolean filterByServices = (this.mScanOptionsFlagMask & 2) != 0;
-            if(filterByServices) {
+            if (filterByServices) {
                 UUID[] services = BluetoothRobot.getAdvertisedServiceUUIDs();
                 this.mBluetoothAdapter.startLeScan(services, this.mLeScanCallback);
             } else {
@@ -160,22 +162,22 @@ public class MipRobotFinderFixed extends BluetoothRobotFinder {
     }
 
     private void getPairedMip() {
-        if(this.mBluetoothAdapter != null) {
+        if (this.mBluetoothAdapter != null) {
             Set paired = this.mBluetoothAdapter.getBondedDevices();
-            if(paired != null && paired.size() != 0) {
+            if (paired != null && paired.size() != 0) {
                 ArrayList list = new ArrayList();
                 list.addAll(paired);
                 this.pairedDeviceList = new ArrayList();
                 Iterator intent = paired.iterator();
 
-                while(intent.hasNext()) {
-                    BluetoothDevice bluetoothDevice = (BluetoothDevice)intent.next();
-                    if(bluetoothDevice.getName() != null && bluetoothDevice.getType() == 2 && bluetoothDevice.getName().toLowerCase().contains("mip")) {
+                while (intent.hasNext()) {
+                    BluetoothDevice bluetoothDevice = (BluetoothDevice) intent.next();
+                    if (bluetoothDevice.getName() != null && bluetoothDevice.getType() == 2 && bluetoothDevice.getName().toLowerCase().contains("mip")) {
                         this.pairedDeviceList.add(bluetoothDevice);
                     }
                 }
 
-                if(this.pairedDeviceList.size() > 0) {
+                if (this.pairedDeviceList.size() > 0) {
                     Intent intent1 = new Intent("com.wowwee.bluetoothrobotcontrollib.MipRobotFinder_MipPairedFound");
                     intent1.putExtra("PairedBluetoothDevices", this.pairedDeviceList);
                     this.mContext.sendBroadcast(intent1);
@@ -186,17 +188,17 @@ public class MipRobotFinderFixed extends BluetoothRobotFinder {
     }
 
     private void handleFoundBluetoothDevice(BluetoothDevice device, byte[] advertisingData, int rssi) {
-        if(!this.isBluetoothDeviceExist(device)) {
+        if (!this.isBluetoothDeviceExist(device)) {
             List records = AdRecord.parseScanRecord(advertisingData);
-            MipRobotFixed robot = new MipRobotFixed(device, records, (BluetoothLeService)null);
+            MipRobotFixed robot = new MipRobotFixed(device, records, (BluetoothLeService) null);
             robot.debugLog();
             boolean filterByProductId = (this.mScanOptionsFlagMask & 1) != 0;
-            if(filterByProductId && robot.getProductId() != 5) {
+            if (filterByProductId && robot.getProductId() != 5) {
                 return;
             }
 
             boolean filterByDeviceName = (this.mScanOptionsFlagMask & 4) != 0;
-            if(filterByDeviceName && !robot.getName().contains("WW-MIP")) {
+            if (filterByDeviceName && !robot.getName().contains("WW-MIP")) {
                 return;
             }
 
@@ -211,9 +213,9 @@ public class MipRobotFinderFixed extends BluetoothRobotFinder {
     private boolean isBluetoothDeviceExist(BluetoothDevice pDevice) {
         Iterator var3 = this.mMipsFound.iterator();
 
-        while(var3.hasNext()) {
-            MipRobotFixed mip = (MipRobotFixed)var3.next();
-            if(mip.getBluetoothDevice().equals(pDevice)) {
+        while (var3.hasNext()) {
+            MipRobotFixed mip = (MipRobotFixed) var3.next();
+            if (mip.getBluetoothDevice().equals(pDevice)) {
                 return true;
             }
         }

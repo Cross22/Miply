@@ -1,12 +1,20 @@
 package bytecycle.com.miply;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.flask.colorpicker.ColorPickerView;
+import com.flask.colorpicker.OnColorSelectedListener;
+import com.flask.colorpicker.builder.ColorPickerClickListener;
+import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,8 +35,37 @@ public class TaskAdapter extends ArrayAdapter<TaskItem> {
         TextView textView = (TextView) rowView.findViewById(R.id.label);
         ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
 
-        // show image with same drawable as the one we dragged up here
-        imageView.setImageDrawable(getItem(position).getDrawable(getContext()));
+        final TaskItem item= getItem(position);
+        // Icon depends on task type
+        imageView.setImageDrawable(item.getDrawable(getContext()));
+        final ImageButton btn = (ImageButton) rowView.findViewById(R.id.colorButton);
+
+        // When user clicks on color button they get a color picker to choose from
+        if (item.taskType== TaskItem.TaskType.COLOR) {
+            btn.setBackgroundColor(item.value);
+            btn.setVisibility(View.VISIBLE);
+
+            btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ColorPickerDialogBuilder
+                            .with(getContext())
+                            .setTitle("Pick a color")
+                            .wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
+                            .density(12)
+                            .initialColor(item.value)
+                            .setPositiveButton("OK", new ColorPickerClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int selectedColor,
+                                                    Integer[] allColors) {
+                                    btn.setBackgroundColor(selectedColor);
+                                }
+                            })
+                            .build()
+                            .show();
+                }
+            });
+        }
         return rowView;
     }
 

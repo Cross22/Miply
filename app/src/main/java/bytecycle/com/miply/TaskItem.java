@@ -39,6 +39,12 @@ public class TaskItem {
                 case DELAY:
                     value= 2;
                     break;
+                case FORWARD:
+                    value= 1;
+                    break;
+                case BACK:
+                    value= 1;
+                    break;
                 default:
                     value= 20;
             }
@@ -76,7 +82,7 @@ public class TaskItem {
         try {
         switch (taskType) {
             case FORWARD:
-                robot.mipDriveDistanceByCm(value);
+                robot.mipDriveDistanceByCm((int) (value * 30.48));
                 // Max: 1.7 seconds forward drive
                 // Move Speed is 0..30
 //              robot.mipDriveForwardForMilliseconds(1700,30);
@@ -87,7 +93,7 @@ public class TaskItem {
                 TimeUnit.SECONDS.sleep(5);
                 break;
             case BACK:
-                robot.mipDriveDistanceByCm(-value);
+                robot.mipDriveDistanceByCm((int) (value * -30.48));
                 //TODO: Adjust sleep time to be proportional to distance
                 TimeUnit.SECONDS.sleep(5);
                 break;
@@ -133,10 +139,10 @@ public class TaskItem {
                 bar.setMax(180);
                 break;
             case FORWARD:
-                bar.setMax(200);
+                bar.setMax(6);
                 break;
             case BACK:
-                bar.setMax(200);
+                bar.setMax(6);
                 break;
             case DELAY:
                 bar.setMax(10);
@@ -160,10 +166,10 @@ public class TaskItem {
                 label.setText(Integer.toString(value) + " °");
                 break;
             case FORWARD:
-                label.setText(Integer.toString(value) + " cm");
+                label.setText(Integer.toString(value) + " ft");
                 break;
             case BACK:
-                label.setText(Integer.toString(value) + " cm");
+                label.setText(Integer.toString(value) + " ft");
                 break;
             case DELAY:
                 label.setText(Integer.toString(value) + " sec");

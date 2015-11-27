@@ -59,6 +59,7 @@ public class TaskAdapter extends ArrayAdapter<TaskItem> {
                                 public void onClick(DialogInterface dialog, int selectedColor,
                                                     Integer[] allColors) {
                                     btn.setBackgroundColor(selectedColor);
+                                    item.value= selectedColor;
                                 }
                             })
                             .build()

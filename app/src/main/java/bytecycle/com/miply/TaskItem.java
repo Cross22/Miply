@@ -30,6 +30,8 @@ public class TaskItem {
         public TaskItem (TaskType aTaskType) {
             taskType= aTaskType;
             value= 20;
+            if (taskType==TaskType.COLOR)
+                value= 0xFFAAAAAA;
         }
 
         public Drawable getDrawable(Context c) {
@@ -84,9 +86,10 @@ public class TaskItem {
                 TimeUnit.SECONDS.sleep(2);
                 break;
             case COLOR:
-                final byte maxb= (byte)255;
-                final byte minb= 0;
-                robot.setMipChestRGBLedWithColor(maxb, minb, minb, (byte)0);
+                 byte b= (byte) ((value >> 0) & 0xFF);
+                 byte g= (byte) ((value >> 8) & 0xFF);
+                 byte r= (byte) ((value >> 16) & 0xFF);
+                robot.setMipChestRGBLedWithColor(r,g,b, (byte)0);
                 TimeUnit.SECONDS.sleep(2);
                 break;
             case SPEAKER:

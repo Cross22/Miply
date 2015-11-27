@@ -1,20 +1,20 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="?android:attr/listPreferredItemHeight"
-    android:padding="6dip" >
+    android:layout_height="?android:attr/listPreferredItemHeight" >
+    <!--android:padding="6dip" >-->
 
 
     <ImageView
         android:id="@+id/draghandle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="30dp"
         android:layout_alignParentLeft="true"
         android:src="@drawable/ic_reorder_black_24dp"
         android:contentDescription="handle"
         android:tint="#a1887f"
         android:layout_centerVertical="true"
         android:padding="10dp" />
+    <!--android:layout_marginRight="20dp"-->
 
     <!--ic_reorder-->
     <ImageView
@@ -22,22 +22,22 @@
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_toRightOf="@id/draghandle"
-        android:layout_marginRight="6dip"
         android:contentDescription="actionicon"
         android:layout_centerVertical="true" />
+    <!--android:layout_marginRight="6dip"-->
 
-    <EditText
-        android:id="@+id/label"
-        android:layout_width="fill_parent"
-        android:layout_height="26dip"
-        android:layout_alignParentRight="true"
-        android:layout_toRightOf="@id/icon"
-        android:singleLine="true"
-        android:textSize="16sp"
-        android:layout_centerVertical="true"
-        android:textAlignment="center"
-        android:background="#fff7d9"
-        android:visibility="gone" />
+    <!--<EditText-->
+        <!--android:id="@+id/label"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="26dip"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_toRightOf="@id/icon"-->
+        <!--android:singleLine="true"-->
+        <!--android:textSize="16sp"-->
+        <!--android:layout_centerVertical="true"-->
+        <!--android:textAlignment="center"-->
+        <!--android:background="#fff7d9"-->
+        <!--android:visibility="gone" />-->
 
     <ImageButton
         android:id="@+id/colorButton"
@@ -52,12 +52,11 @@
 
     <SeekBar
         android:id="@+id/seekBar"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_toRightOf="@id/icon"
         android:layout_centerVertical="true"
-        android:background="#fff7d9"
         android:max="180"
         android:progress="90"
         android:layout_alignParentEnd="true"

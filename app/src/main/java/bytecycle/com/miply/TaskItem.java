@@ -140,6 +140,7 @@ public class TaskItem {
             default:
             ;
         }
+        bar.setProgress(value);
     }
 
 

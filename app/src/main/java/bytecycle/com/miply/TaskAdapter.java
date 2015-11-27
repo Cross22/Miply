@@ -33,7 +33,7 @@ public class TaskAdapter extends ArrayAdapter<TaskItem> {
         LayoutInflater inflater = (LayoutInflater) this.getContext()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.listrow, parent, false);
-        TextView textView = (TextView) rowView.findViewById(R.id.label);
+//        TextView textView = (TextView) rowView.findViewById(R.id.label);
         ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
 
         final TaskItem item= getItem(position);
@@ -41,12 +41,6 @@ public class TaskAdapter extends ArrayAdapter<TaskItem> {
         imageView.setImageDrawable(item.getDrawable(getContext()));
         final ImageButton btn = (ImageButton) rowView.findViewById(R.id.colorButton);
         final SeekBar bar = (SeekBar) rowView.findViewById(R.id.seekBar);
-
-        // Default behavior: show slider
-        bar.setVisibility(View.VISIBLE);
-        btn.setVisibility(View.GONE);
-        // configure range etc.
-        item.configureSeekBar(bar);
 
         // When user clicks on color button they get a color picker to choose from
         switch (item.taskType) {
@@ -78,18 +72,27 @@ public class TaskAdapter extends ArrayAdapter<TaskItem> {
                 });
                 break;
             }
-            case FORWARD:
-                break;
-            case BACK:
-                break;
-            case LEFT:
-                break;
-            case RIGHT:
-                break;
-            case SPEAKER:
-                break;
-            case DELAY:
-                break;
+            default:
+                // Default behavior: show slider
+                bar.setVisibility(View.VISIBLE);
+                btn.setVisibility(View.GONE);
+                // configure range etc.
+                item.configureSeekBar(bar);
+                bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                    @Override
+                    public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                        item.value= i;
+                    }
+
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) {
+                    }
+
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {
+
+                    }
+                });
         }
         if (item.taskType== TaskItem.TaskType.COLOR) {
         }

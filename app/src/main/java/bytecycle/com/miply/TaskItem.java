@@ -82,6 +82,8 @@ public class TaskItem {
 //              robot.mipDriveForwardForMilliseconds(1700,30);
 
                 //TODO: Adjust sleep time to be proportional to distance
+                // If we resume sending commands before this command is complete, everything
+                // breaks!
                 TimeUnit.SECONDS.sleep(5);
                 break;
             case BACK:
@@ -91,11 +93,11 @@ public class TaskItem {
                 break;
             case LEFT:
                 // speed= 0..24
-                robot.mipTurnLeftByDegrees(90,20);
+                robot.mipTurnLeftByDegrees(value,20);
                 TimeUnit.SECONDS.sleep(1);
                 break;
             case RIGHT:
-                robot.mipTurnRightByDegrees(90, 20);
+                robot.mipTurnRightByDegrees(value, 20);
                 TimeUnit.SECONDS.sleep(1);
                 break;
             case COLOR:
@@ -108,7 +110,7 @@ public class TaskItem {
             case SPEAKER:
 //                MipRobotFixed fixedBot= (MipRobotFixed) robot;
 //                fixedBot.mipSetRadarMode(MipRobotFixed.RadarMode.RANGE);
-                robot.mipPlaySound(new MipRobotSound((byte)value, (byte)0, (byte)100));
+                robot.mipPlaySound(new MipRobotSound((byte)value));
                 //TODO: How do we know when the bot is done talking??
                 TimeUnit.SECONDS.sleep(2);
                 break;

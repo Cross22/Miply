@@ -33,8 +33,8 @@ public class TaskAdapter extends ArrayAdapter<TaskItem> {
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) this.getContext()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        // reuse if we can
-        View rowView = convertView!=null ? convertView :
+        // TODO: reuse if we can
+        View rowView =
                 inflater.inflate(R.layout.listrow, parent, false);
         ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
 
@@ -100,8 +100,6 @@ public class TaskAdapter extends ArrayAdapter<TaskItem> {
 
                     }
                 });
-        }
-        if (item.taskType== TaskItem.TaskType.COLOR) {
         }
         return rowView;
     }

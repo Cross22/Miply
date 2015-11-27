@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -32,20 +33,23 @@ public class TaskAdapter extends ArrayAdapter<TaskItem> {
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) this.getContext()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = inflater.inflate(R.layout.listrow, parent, false);
-//        TextView textView = (TextView) rowView.findViewById(R.id.label);
+        // reuse if we can
+        View rowView = convertView!=null ? convertView :
+                inflater.inflate(R.layout.listrow, parent, false);
         ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
 
         final TaskItem item= getItem(position);
         // Icon depends on task type
         imageView.setImageDrawable(item.getDrawable(getContext()));
         final ImageButton btn = (ImageButton) rowView.findViewById(R.id.colorButton);
+        final FrameLayout seekContainer = (FrameLayout) rowView.findViewById(R.id.seekContainer);
         final SeekBar bar = (SeekBar) rowView.findViewById(R.id.seekBar);
+        final TextView seekLabel = (TextView) rowView.findViewById(R.id.seekLabel);
 
         // When user clicks on color button they get a color picker to choose from
         switch (item.taskType) {
             case COLOR: {
-                bar.setVisibility(View.GONE);
+                seekContainer.setVisibility(View.GONE);
                 btn.setVisibility(View.VISIBLE);
                 btn.setBackgroundColor(item.value);
 
@@ -74,14 +78,17 @@ public class TaskAdapter extends ArrayAdapter<TaskItem> {
             }
             default:
                 // Default behavior: show slider
-                bar.setVisibility(View.VISIBLE);
+                seekContainer.setVisibility(View.VISIBLE);
                 btn.setVisibility(View.GONE);
                 // configure range etc.
                 item.configureSeekBar(bar);
+                item.updateSeekLabel(seekLabel);
+
                 bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                     @Override
                     public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                         item.value= i;
+                        item.updateSeekLabel(seekLabel);
                     }
 
                     @Override

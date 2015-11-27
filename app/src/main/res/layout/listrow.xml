@@ -50,18 +50,34 @@
         android:src="@drawable/colorpicker"
         android:visibility="gone" />
 
-    <SeekBar
-        android:id="@+id/seekBar"
+
+    <FrameLayout
+        android:id="@+id/seekContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_toRightOf="@id/icon"
         android:layout_centerVertical="true"
-        android:max="180"
-        android:progress="90"
         android:layout_alignParentEnd="true"
-        />
-    <!--android:thumb="@drawable/thumb_image"-->
+        >
 
+        <SeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="180"
+            android:progress="90"
+            />
+        <TextView
+            android:id="@+id/seekLabel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="24sp"
+            android:text="10"
+            android:layout_gravity="center"
+            android:textAlignment="center" />
+
+
+    </FrameLayout>
 
 </RelativeLayout> 

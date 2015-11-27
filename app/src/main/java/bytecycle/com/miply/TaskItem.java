@@ -5,6 +5,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.wowwee.bluetoothrobotcontrollib.MipCommandValues;
 import com.wowwee.bluetoothrobotcontrollib.MipRobotSound;
@@ -79,10 +80,13 @@ public class TaskItem {
                 // Max: 1.7 seconds forward drive
                 // Move Speed is 0..30
 //              robot.mipDriveForwardForMilliseconds(1700,30);
+
+                //TODO: Adjust sleep time to be proportional to distance
                 TimeUnit.SECONDS.sleep(5);
                 break;
             case BACK:
                 robot.mipDriveDistanceByCm(-value);
+                //TODO: Adjust sleep time to be proportional to distance
                 TimeUnit.SECONDS.sleep(5);
                 break;
             case LEFT:
@@ -99,13 +103,14 @@ public class TaskItem {
                  byte g= (byte) ((value >> 8) & 0xFF);
                  byte r= (byte) ((value >> 16) & 0xFF);
                 robot.setMipChestRGBLedWithColor(r,g,b, (byte)0);
-                TimeUnit.SECONDS.sleep(2);
+                TimeUnit.SECONDS.sleep(1);
                 break;
             case SPEAKER:
-                MipRobotFixed fixedBot= (MipRobotFixed) robot;
-                fixedBot.mipSetRadarMode(MipRobotFixed.RadarMode.RANGE);
-//                robot.mipPlaySound(new MipRobotSound((byte)99, (byte)0, (byte)100));
-//                TimeUnit.SECONDS.sleep(1);
+//                MipRobotFixed fixedBot= (MipRobotFixed) robot;
+//                fixedBot.mipSetRadarMode(MipRobotFixed.RadarMode.RANGE);
+                robot.mipPlaySound(new MipRobotSound((byte)value, (byte)0, (byte)100));
+                //TODO: How do we know when the bot is done talking??
+                TimeUnit.SECONDS.sleep(2);
                 break;
             case DELAY:
                 TimeUnit.SECONDS.sleep(this.value);
@@ -143,6 +148,31 @@ public class TaskItem {
         bar.setProgress(value);
     }
 
+    // TODO: Set range/indents for the given seekbar
+    public void updateSeekLabel(TextView label) {
+        switch (taskType) {
+            case LEFT:
+                label.setText(Integer.toString(value)+" °");
+                break;
+            case RIGHT:
+                label.setText(Integer.toString(value) + " °");
+                break;
+            case FORWARD:
+                label.setText(Integer.toString(value) + " cm");
+                break;
+            case BACK:
+                label.setText(Integer.toString(value) + " cm");
+                break;
+            case DELAY:
+                label.setText(Integer.toString(value) + " sec");
+                break;
+            case SPEAKER:
+                label.setText(Integer.toString(value) );
+                break;
+            default:
+                ;
+        }
+    }
 
     public enum TaskType {
         FORWARD, BACK, LEFT, RIGHT, COLOR, SPEAKER, DELAY;

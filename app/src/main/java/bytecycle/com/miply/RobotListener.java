@@ -36,7 +36,7 @@ public class RobotListener implements MipRobotFixed.MipRobotInterfaceFixed {
         mParent.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mParent.mListView.setBackgroundColor(Color.GREEN);
+                mParent.enableRunButton(true);
                 log("Connected!", robot);
             }
         });
@@ -49,7 +49,7 @@ public class RobotListener implements MipRobotFixed.MipRobotInterfaceFixed {
         mParent.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mParent.mListView.setBackgroundColor(Color.RED);
+                mParent.enableRunButton(false);
                 log("Disconnected!", robot);
             }
         });

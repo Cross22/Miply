@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,12 +25,21 @@ import com.wowwee.bluetoothrobotcontrollib.sdk.MipRobotFinderFixed;
 import com.wowwee.bluetoothrobotcontrollib.sdk.MipRobotFixed;
 
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class MainActivity extends AppCompatActivity {
-
-    private TaskAdapter mAdapter;
+    // Listview backing adapter
+    protected TaskAdapter mAdapter;
     DragSortListView mListView;
-    private BluetoothAdapter mBluetoothAdapter;
+    protected BluetoothAdapter mBluetoothAdapter;
+
+    // Action bar menu
+    protected Menu mMenu;
+
+    // currently active task list
+    protected RobotTasks mTasks;
+
+
 
     protected void makeClickable(int viewId, final TaskItem.TaskType taskType) {
         final ImageView iv = (ImageView) findViewById(viewId);
@@ -124,13 +134,20 @@ public class MainActivity extends AppCompatActivity {
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater= getMenuInflater();
-        inflater.inflate(R.menu.actionbar, menu);
+        mMenu = menu;
+        getMenuInflater().inflate(R.menu.actionbar, menu);
         return true;
     }
 
-    // currently active task list
-    protected RobotTasks mTasks;
+    public void enableRunButton(boolean enable) {
+        MenuItem item= mMenu.findItem(R.id.action_run);
+        item.setEnabled(enable);
+        if (enable) {
+            item.setIcon(R.drawable.ic_play_circle_filled_white_48dp);
+        } else {
+            item.setIcon(R.drawable.ic_not_interested_white_48dp);
+        }
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -144,9 +161,9 @@ public class MainActivity extends AppCompatActivity {
                 mTasks= new RobotTasks(mListView, mRobotListener);
                 mTasks.execute();
                 return true;
-            case R.id.action_settings:
-                //TODO:
-                return true;
+            //TODO:
+//            case R.id.action_settings:
+//                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

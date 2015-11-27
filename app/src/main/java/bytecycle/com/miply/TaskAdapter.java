@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.flask.colorpicker.ColorPickerView;
@@ -39,33 +40,58 @@ public class TaskAdapter extends ArrayAdapter<TaskItem> {
         // Icon depends on task type
         imageView.setImageDrawable(item.getDrawable(getContext()));
         final ImageButton btn = (ImageButton) rowView.findViewById(R.id.colorButton);
+        final SeekBar bar = (SeekBar) rowView.findViewById(R.id.seekBar);
+
+        // Default behavior: show slider
+        bar.setVisibility(View.VISIBLE);
+        btn.setVisibility(View.GONE);
+        // configure range etc.
+        item.configureSeekBar(bar);
 
         // When user clicks on color button they get a color picker to choose from
-        if (item.taskType== TaskItem.TaskType.COLOR) {
-            btn.setBackgroundColor(item.value);
-            btn.setVisibility(View.VISIBLE);
+        switch (item.taskType) {
+            case COLOR: {
+                bar.setVisibility(View.GONE);
+                btn.setVisibility(View.VISIBLE);
+                btn.setBackgroundColor(item.value);
 
-            btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ColorPickerDialogBuilder
-                            .with(getContext())
-                            .setTitle("Pick a color")
-                            .wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
-                            .density(12)
-                            .initialColor(item.value)
-                            .setPositiveButton("OK", new ColorPickerClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int selectedColor,
-                                                    Integer[] allColors) {
-                                    btn.setBackgroundColor(selectedColor);
-                                    item.value= selectedColor;
-                                }
-                            })
-                            .build()
-                            .show();
-                }
-            });
+                btn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        ColorPickerDialogBuilder
+                                .with(getContext())
+                                .setTitle("Pick a color")
+                                .wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
+                                .density(12)
+                                .initialColor(item.value)
+                                .setPositiveButton("OK", new ColorPickerClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int selectedColor,
+                                                        Integer[] allColors) {
+                                        btn.setBackgroundColor(selectedColor);
+                                        item.value= selectedColor;
+                                    }
+                                })
+                                .build()
+                                .show();
+                    }
+                });
+                break;
+            }
+            case FORWARD:
+                break;
+            case BACK:
+                break;
+            case LEFT:
+                break;
+            case RIGHT:
+                break;
+            case SPEAKER:
+                break;
+            case DELAY:
+                break;
+        }
+        if (item.taskType== TaskItem.TaskType.COLOR) {
         }
         return rowView;
     }

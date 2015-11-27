@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
+import android.widget.SeekBar;
 
 import com.wowwee.bluetoothrobotcontrollib.MipCommandValues;
 import com.wowwee.bluetoothrobotcontrollib.MipRobotSound;
@@ -20,18 +21,26 @@ import java.util.concurrent.TimeUnit;
  */
 public class TaskItem {
 
-    public enum TaskType {
-        FORWARD, BACK, LEFT, RIGHT, COLOR, SPEAKER, DELAY;
-    }
-
         public TaskType taskType;
         public int value;
-
         public TaskItem (TaskType aTaskType) {
             taskType= aTaskType;
-            value= 20;
-            if (taskType==TaskType.COLOR)
-                value= 0xFFAAAAAA;
+            switch (aTaskType) {
+                case LEFT:
+                    value= 90;
+                    break;
+                case RIGHT:
+                    value= 90;
+                    break;
+                case COLOR:
+                    value= 0xFFAAAAAA;
+                    break;
+                case DELAY:
+                    value= 2;
+                    break;
+                default:
+                    value= 20;
+            }
         }
 
         public Drawable getDrawable(Context c) {
@@ -79,11 +88,11 @@ public class TaskItem {
             case LEFT:
                 // speed= 0..24
                 robot.mipTurnLeftByDegrees(90,20);
-                TimeUnit.SECONDS.sleep(2);
+                TimeUnit.SECONDS.sleep(1);
                 break;
             case RIGHT:
                 robot.mipTurnRightByDegrees(90, 20);
-                TimeUnit.SECONDS.sleep(2);
+                TimeUnit.SECONDS.sleep(1);
                 break;
             case COLOR:
                  byte b= (byte) ((value >> 0) & 0xFF);
@@ -105,6 +114,37 @@ public class TaskItem {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    // TODO: Set range/indents for the given seekbar
+    public void configureSeekBar(SeekBar bar) {
+        switch (taskType) {
+            case LEFT:
+                bar.setMax(180);
+                break;
+            case RIGHT:
+                bar.setMax(180);
+                break;
+            case FORWARD:
+                bar.setMax(200);
+                break;
+            case BACK:
+                bar.setMax(200);
+                break;
+            case DELAY:
+                bar.setMax(10);
+                break;
+            case SPEAKER:
+                bar.setMax(100);
+                break;
+            default:
+            ;
+        }
+    }
+
+
+    public enum TaskType {
+        FORWARD, BACK, LEFT, RIGHT, COLOR, SPEAKER, DELAY;
     }
 
 

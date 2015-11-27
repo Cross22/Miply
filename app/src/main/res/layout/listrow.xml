@@ -46,8 +46,23 @@
         android:layout_alignParentRight="true"
         android:layout_toRightOf="@id/icon"
         android:layout_centerVertical="true"
-        android:textAlignment="center"
         android:background="#fff7d9"
-        android:src="@drawable/colorpicker" />
+        android:src="@drawable/colorpicker"
+        android:visibility="gone" />
+
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@id/icon"
+        android:layout_centerVertical="true"
+        android:background="#fff7d9"
+        android:max="180"
+        android:progress="90"
+        android:layout_alignParentEnd="true"
+        />
+    <!--android:thumb="@drawable/thumb_image"-->
+
 
 </RelativeLayout> 

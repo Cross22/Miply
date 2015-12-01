@@ -46,7 +46,7 @@ public class TaskItem {
                     value= 1;
                     break;
                 default:
-                    value= 20;
+                    value= 35;
             }
         }
 
@@ -78,6 +78,12 @@ public class TaskItem {
             return ContextCompat.getDrawable(c, resId);
         }
 
+    private long delayMsForDistance(int feet) {
+        // magic numbers based on empirical measurements..
+        float delay= 2.5f + (feet-1) * 7.0f/5.0f;
+        return (long) (Math.max(0, delay) * 1000);
+    }
+
     public void execute(MipRobot robot) {
         try {
         switch (taskType) {
@@ -87,15 +93,13 @@ public class TaskItem {
                 // Move Speed is 0..30
 //              robot.mipDriveForwardForMilliseconds(1700,30);
 
-                //TODO: Adjust sleep time to be proportional to distance
                 // If we resume sending commands before this command is complete, everything
                 // breaks!
-                TimeUnit.SECONDS.sleep(5);
+                TimeUnit.MILLISECONDS.sleep(delayMsForDistance(value));
                 break;
             case BACK:
                 robot.mipDriveDistanceByCm((int) (value * -30.48));
-                //TODO: Adjust sleep time to be proportional to distance
-                TimeUnit.SECONDS.sleep(5);
+                TimeUnit.MILLISECONDS.sleep(delayMsForDistance(value));
                 break;
             case LEFT:
                 // speed= 0..24

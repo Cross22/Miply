@@ -54,7 +54,7 @@
     <FrameLayout
         android:id="@+id/seekContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="70dp"
         android:layout_alignParentRight="true"
         android:layout_toRightOf="@id/icon"
         android:layout_centerVertical="true"
@@ -67,7 +67,7 @@
             android:layout_height="wrap_content"
             android:max="180"
             android:progress="90"
-            />
+            android:layout_gravity="center" />
         <TextView
             android:id="@+id/seekLabel"
             android:layout_width="match_parent"
@@ -75,7 +75,8 @@
             android:textSize="24sp"
             android:text="10"
             android:layout_gravity="center"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:gravity="center_vertical|center_horizontal" />
 
 
     </FrameLayout>

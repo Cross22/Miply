@@ -88,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
         // Icon in the list row that serves as handle for dragging the row
         // defaults to entire row if not set
         controller.setDragHandleId(R.id.draghandle);
+        controller.setFlingHandleId(R.id.draghandle);
     }
 
     protected void configureBleService() {
